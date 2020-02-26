@@ -12,4 +12,14 @@ class AlphabetTest < Minitest::Test
     assert_instance_of Alphabet, @alpha
   end
 
+  def test_it_has_attributes
+    expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
+    assert_equal expected, @alpha.alphabet
+  end
+
+  def test_it_creates_alphabet
+    expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
+    assert_equal expected, @alpha.create_alphabet  
+  end
+
 end
