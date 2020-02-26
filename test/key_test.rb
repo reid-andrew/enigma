@@ -31,6 +31,13 @@ class KeyTest < Minitest::Test
     assert_equal "D", key2.key_letter
   end
 
+  def test_it_creates_key_hash
+    Key.create_keys("02715")
+    expected = {:A => 2, :B => 27, :C => 71, :D => 15}
+
+    assert_equal expected, Key.key_values
+  end
+
   def test_it_exists
     assert_instance_of Key, @key1
     assert_instance_of Key, @key2
