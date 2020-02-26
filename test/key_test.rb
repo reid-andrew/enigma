@@ -8,6 +8,15 @@ class KeyTest < Minitest::Test
     @key = Key.new("02")
   end
 
+  def test_it_creates_keys
+    Key.create_keys("02715")
+
+    assert_equal 4, Key.all.size
+    assert_equal "02", Key.all[0].random_number
+    assert_equal "15", Key.all[-1].random_number
+    require "pry"; binding.pry
+  end
+
   def test_it_exists
     assert_instance_of Key, @key
   end
