@@ -19,6 +19,18 @@ class KeyTest < Minitest::Test
     assert_equal "D", Key.all[-1].key_letter
   end
 
+  def test_it_creates_single_key
+    key1 = Key.create_single_key("ABCD", "02715", 0)
+
+    assert_equal "02", key1.key_number
+    assert_equal "A", key1.key_letter
+
+    key2 = Key.create_single_key("ABCD", "02715", 3)
+
+    assert_equal "15", key2.key_number
+    assert_equal "D", key2.key_letter
+  end
+
   def test_it_exists
     assert_instance_of Key, @key1
     assert_instance_of Key, @key2

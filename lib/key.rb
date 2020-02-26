@@ -7,9 +7,13 @@ class Key
     counter = 0
     letters = "ABCD"
     while counter < 4
-      @@all_keys << Key.new(letters[counter], "#{random_number[counter]}#{random_number[counter + 1]}")
+      @@all_keys << create_single_key(letters, random_number, counter)
       counter += 1
     end
+  end
+
+  def self.create_single_key(letters, number, counter)
+    Key.new(letters[counter], "#{number[counter]}#{number[counter + 1]}")
   end
 
   def self.all
