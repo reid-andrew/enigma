@@ -1,0 +1,3 @@
+class Alphabet
+
+end
