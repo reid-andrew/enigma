@@ -1,5 +1,7 @@
 require 'date'
-require './lib/alphabet'
+require './lib/alphabet.rb'
+require './lib/key'
+require './lib/offset.rb'
 
 class Enigma
 
@@ -9,8 +11,20 @@ class Enigma
     @alphabet ||= Alphabet.new
   end
 
-  def encrypt(message, key, date = Date.today)
-    date = date_conversion(date)
+  def encrypt(message, key = random_key, date = Date.today)
+    Key.create_keys(pad_key(key))
+    ShiftOffset.create_offsets(date_conversion(date))
+
+  end
+
+  def calculate_shifts
+    keys = Key.key_values
+    offsets = ShiftOffset.offset_values
+    shifts = keys.reduce ({}) do |shift, (letter, number)|
+      shift[letter] = number + offsets[letter]
+      shift
+    end
+    shifts
   end
 
   def date_conversion(date)
@@ -23,7 +37,7 @@ class Enigma
 
   def pad_key(rando_key)
     rando_key = rando_key.to_s
-    while rando_key.length < 6
+    while rando_key.length < 5
       rando_key.prepend("0")
     end
     rando_key

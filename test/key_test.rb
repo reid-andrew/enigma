@@ -10,7 +10,6 @@ class KeyTest < Minitest::Test
 
   def test_it_creates_keys
     Key.create_keys("02715")
-
     assert_equal 4, Key.all.size
     assert_equal "02", Key.all[0].key_number
     assert_equal "A", Key.all[0].key_letter
