@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper.rb'
 require './lib/alphabet.rb'
 
 class AlphabetTest < Minitest::Test
@@ -19,7 +18,7 @@ class AlphabetTest < Minitest::Test
 
   def test_it_creates_alphabet
     expected = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
-    assert_equal expected, @alpha.create_alphabet  
+    assert_equal expected, @alpha.create_alphabet
   end
 
 end

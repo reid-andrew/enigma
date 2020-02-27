@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper.rb'
 require './lib/offset.rb'
 
 class ShiftOffsetTest < Minitest::Test
@@ -41,7 +40,6 @@ class ShiftOffsetTest < Minitest::Test
 
   def test_it_creates_offset_hash
     ShiftOffset.create_offsets("040895")
-    require "pry"; binding.pry
     expected = {:A => 1, :B => 0, :C => 2, :D => 5}
 
     assert_equal expected, ShiftOffset.offset_values
