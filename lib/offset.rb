@@ -29,6 +29,13 @@ class ShiftOffset
     @@all_offsets
   end
 
+  def self.offset_values
+    @@offset_values ||= @@all_offsets.reduce ({}) do |offset_values, offset|
+      offset_values[offset.offset_letter.to_sym] = offset.offset_number
+      offset_values
+    end
+  end
+
   attr_reader :offset_letter,
               :offset_number
 

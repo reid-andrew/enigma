@@ -39,6 +39,14 @@ class ShiftOffsetTest < Minitest::Test
     assert_equal "D", key2.offset_letter
   end
 
+  def test_it_creates_offset_hash
+    ShiftOffset.create_offsets("040895")
+    require "pry"; binding.pry
+    expected = {:A => 1, :B => 0, :C => 2, :D => 5}
+
+    assert_equal expected, ShiftOffset.offset_values
+  end
+
   def test_it_exists
     assert_instance_of ShiftOffset, @offset1
     assert_instance_of ShiftOffset, @offset2
