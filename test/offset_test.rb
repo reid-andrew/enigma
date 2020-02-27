@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper.rb'
 require './lib/offset.rb'
 
 class ShiftOffsetTest < Minitest::Test
