@@ -21,4 +21,14 @@ class AlphabetTest < Minitest::Test
     assert_equal expected, @alpha.create_alphabet
   end
 
+  def test_it_creates_alphabet_by_letter
+    assert_equal 3, @alpha.alpha_by_letter["c"]
+    assert_equal 6, @alpha.alpha_by_letter["f"]
+  end
+
+  def test_it_creates_alphabet_by_number
+    assert_equal "c", @alpha.alpha_by_number[3]
+    assert_equal "f", @alpha.alpha_by_number[6]
+  end
+
 end
