@@ -1,4 +1,5 @@
 require './test/test_helper.rb'
+require './lib/alphabet.rb'
 require './lib/enigma.rb'
 
 class EnigmaTest < Minitest::Test
@@ -9,6 +10,48 @@ class EnigmaTest < Minitest::Test
 
   def test_it_exists
     assert_instance_of Enigma, @enigma
+  end
+
+  def test_it_has_attributes
+    assert_instance_of Alphabet, @enigma.alphabet
+  end
+
+  def test_it_encrypts_messages
+    skip
+    expected = {
+      encryption: "keder ohulw",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @engima.encrypt("hello world", "02715", "040895")
+  end
+
+  def test_it_converts_dates
+    Date.stubs(:today).returns(Date.parse('03-05-2020'))
+
+    assert_equal "05032020", @enigma.date_conversion(Date.today)
+  end
+
+  def test_it_creates_random_key
+    @enigma.stubs(:rand).returns(1234)
+
+    assert_equal 1234, @enigma.random_key
+
+    @enigma.stubs(:rand).returns(987654)
+    require "pry"; binding.pry
+
+    assert_equal 987654, @enigma.random_key
+  end
+
+  def test_it_adds_leading_zeroes_to_random_keys
+    @enigma.stubs(:random_key).returns(1234)
+
+    assert_equal "001234", @enigma.pad_key(@enigma.random_key)
+
+    @enigma.stubs(:random_key).returns(987654)
+
+    assert_equal "987654", @enigma.pad_key(@enigma.random_key)
   end
 
 end
