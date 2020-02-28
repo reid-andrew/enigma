@@ -86,8 +86,8 @@ class CryptographyTest < Minitest::Test
 
     assert_equal 4, @crypto.shift_value(@crypto.find_start_position("a"), shifts[@crypto.find_shift(1)], true)
     assert_equal 10, @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], true)
-    assert_equal (-4), @crypto.shift_value(@crypto.find_start_position("a"), shifts[@crypto.find_shift(1)], false)
-    assert_equal (-10), @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], false)
+    assert_equal (25), @crypto.shift_value(@crypto.find_start_position("a"), shifts[@crypto.find_shift(1)], false)
+    assert_equal (0), @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], false)
   end
 
   def test_it_shifts_message
@@ -97,7 +97,7 @@ class CryptographyTest < Minitest::Test
     Key.stubs(:key_values).returns(key_test_values)
     @crypto.calculate_shifts
     expected = ['b', 'd', 'f', 'h', '!', 'z', 'a', 'c', 'a', ' ']
-    assert_equal expected, @crypto.shift_message(['a', 'b', 'c', 'd', '!', 'x', 'y', 'z', ' ', 'y'])
+    assert_equal expected, @crypto.shift_message(['a', 'b', 'c', 'd', '!', 'x', 'y', 'z', ' ', 'y'], true)
   end
 
   def test_it_shifts_characters
@@ -107,7 +107,7 @@ class CryptographyTest < Minitest::Test
     Key.stubs(:key_values).returns(key_test_values)
     @crypto.calculate_shifts
 
-    assert_equal 'b', @crypto.shift_character('a', 1)
+    assert_equal 'b', @crypto.shift_character('a', 1, true)
   end
 
   def test_it_encryptions_messages
@@ -150,6 +150,16 @@ class CryptographyTest < Minitest::Test
     }
 
     assert_equal expected2, @crypto.encrypt("stubs")
+  end
+
+  def test_it_decrypts_messages
+    expected = {
+      encryption: "hello world",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @crypto.decrypt("keder ohulw", "02715", "040895")
   end
 
 end

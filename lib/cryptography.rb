@@ -17,4 +17,8 @@ class Cryptography
     encryption(true, message, key, date)
   end
 
+  def decrypt(message, key, date = Date.today)
+    encryption(false, message, key, date)
+  end
+
 end
