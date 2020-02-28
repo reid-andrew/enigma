@@ -55,12 +55,12 @@ module Encryptable
     output = []
     message_characters.each do |char|
       counter += 1
-      if @alphabet.alphabet.include?(char)
+      if !@alphabet.alphabet.include?(char)
+        output << char
+      else
         shift_value = shift_value(find_start_position(char), @shifts[find_shift(counter)], encrypt)
         char = find_shift_position(shift_value)
         char = " " if char.nil?
-        output << char
-      else
         output << char
       end
     end
