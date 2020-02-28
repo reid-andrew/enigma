@@ -8,4 +8,8 @@ class Enigma < Cryptography
     super
   end
 
+  def decrypt(message, key = random_key, date = Date.today)
+    super
+  end
+
 end
