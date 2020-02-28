@@ -14,7 +14,7 @@ class Cryptography
   end
 
   def encrypt(message, key = random_key, date = Date.today)
-    encryption(message, key, date)
+    encryption(true, message, key, date)
   end
 
 end

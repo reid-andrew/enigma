@@ -66,7 +66,7 @@ module Encryptable
     find_shift_position(shift_value).nil? ? " " : find_shift_position(shift_value)
   end
 
-  def encryption(message, key = random_key, date = Date.today, encrypt = true)
+  def encryption(encrypt, message, key = random_key, date = Date.today)
     key = pad_key(key)
     Key.create_keys(key)
     date = date.class == Date ? date_conversion(date) : date
