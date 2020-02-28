@@ -62,10 +62,8 @@ module Encryptable
 
   def shift_character(char, counter, encrypt = true)
     return char if !@alphabet.alphabet.include?(char)
-
     shift_value = shift_value(find_start_position(char), @shifts[find_shift(counter)], encrypt)
-    char = find_shift_position(shift_value)
-    char.nil? ? " " : char
+    find_shift_position(shift_value).nil? ? " " : find_shift_position(shift_value)
   end
 
   def encryption(message, key = random_key, date = Date.today, encrypt = true)
