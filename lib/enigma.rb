@@ -14,7 +14,38 @@ class Enigma
   def encrypt(message, key = random_key, date = Date.today)
     Key.create_keys(pad_key(key))
     ShiftOffset.create_offsets(date_conversion(date))
+    calculate_shifts
+    message_characters = split_characters(message)
+    shift_characters(message_characters)
 
+  end
+
+  def convert_message(message)
+    message.split(//)
+  end
+
+  def shift_characters(message_characters)
+    counter = 0
+    message_characters.map do |char|
+      counter += 1
+      find_shift(counter)
+
+    end
+  end
+
+  def find_start_position(letter)
+    @alphabet.alpha_by_letter[letter]
+  end
+
+  def find_shift_position(number)
+    @alphabet.alpha_by_number[number]
+  end
+
+  def find_shift(counter)
+    return :A if counter % 4 == 1
+    return :B if counter % 4 == 2
+    return :C if counter % 4 == 3
+    :D
   end
 
   def calculate_shifts
@@ -25,6 +56,10 @@ class Enigma
       shift
     end
     shifts
+  end
+
+  def split_characters(message)
+    message.split()
   end
 
   def date_conversion(date)

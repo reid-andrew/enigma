@@ -29,6 +29,39 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @engima.encrypt("hello world", "02715", "040895")
   end
 
+  def test_it_splits_message_characters
+    expected = ['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd']
+    assert_equal expected, @enigma.convert_message('hello, world')
+  end
+
+  def test_it_shifts_characters
+    skip
+    offset_test_values = {:A => 1, :B => 1, :C => 1, :D => 1}
+    key_test_values = {:A => 0, :B => 1, :C => 2, :D => 3}
+    ShiftOffset.stubs(:offset_values).returns(offset_test_values)
+    Key.stubs(:key_values).returns(key_test_values)
+
+    expected = ['b', 'd', 'f', 'h', '!', 'x', 'y', 'z']
+    assert_equal expected, @enigma.shift_characters(['a', 'b', 'c', 'd', '!', 'z', 'b', 'd'])
+  end
+
+  def test_it_finds_start_position
+    assert_equal 1, @enigma.find_start_position('a')
+    assert_equal 27, @enigma.find_start_position(' ')
+  end
+
+  def test_it_finds_shift_position
+    assert_equal 'a', @enigma.find_shift_position(1)
+    assert_equal ' ', @enigma.find_shift_position(27)
+  end
+
+  def test_it_finds_abcd_shift
+    assert_equal :A, @enigma.find_shift(1)
+    assert_equal :A, @enigma.find_shift(5)
+    assert_equal :C, @enigma.find_shift(3)
+    assert_equal :C, @enigma.find_shift(11)
+  end
+
   def test_it_calculates_shifts
     offset_test_values = {:A => 1, :B => 0, :C => 2, :D => 5}
     key_test_values = {:A => 2, :B => 27, :C => 71, :D => 15}
