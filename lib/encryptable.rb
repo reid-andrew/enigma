@@ -1,22 +1,11 @@
 module Encryptable
 
-  def convert_message(message)
-    message.downcase.split(//)
+  def find_start_position(letter)
+    @alphabet.alpha_by_letter[letter]
   end
 
-  def find_shift(counter)
-    return :A if counter % 4 == 1
-    return :B if counter % 4 == 2
-    return :C if counter % 4 == 3
-    :D
-  end
-
-  def split_characters(message)
-    message.split()
-  end
-
-  def date_conversion(date)
-    date.strftime("%m%d%Y")
+  def find_shift_position(number)
+    @alphabet.alpha_by_number[number]
   end
 
   def random_key
@@ -29,6 +18,35 @@ module Encryptable
       random_key.prepend("0")
     end
     random_key
+  end
+
+  def date_conversion(date)
+    date.strftime("%m%d%Y")
+  end
+
+  def convert_message(message)
+    message.downcase.split(//)
+  end
+
+  def find_shift(counter)
+    return :A if counter % 4 == 1
+    return :B if counter % 4 == 2
+    return :C if counter % 4 == 3
+    :D
+  end
+
+  def calculate_shifts
+    keys = Key.key_values
+    offsets = ShiftOffset.offset_values
+    @shifts = keys.reduce ({}) do |shift, (letter, number)|
+      shift[letter] = number + offsets[letter]
+      shift
+    end
+    @shifts
+  end
+
+  def split_characters(message)
+    message.split()
   end
 
   def shift_characters(message_characters)
@@ -49,23 +67,17 @@ module Encryptable
     output
   end
 
-  def find_start_position(letter)
-    @alphabet.alpha_by_letter[letter]
-  end
 
-  def find_shift_position(number)
-    @alphabet.alpha_by_number[number]
-  end
 
-  def calculate_shifts
-    keys = Key.key_values
-    offsets = ShiftOffset.offset_values
-    @shifts = keys.reduce ({}) do |shift, (letter, number)|
-      shift[letter] = number + offsets[letter]
-      shift
-    end
-    @shifts
-  end
+
+
+
+
+
+
+
+
+
 
 
 end
