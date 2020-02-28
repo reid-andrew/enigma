@@ -24,14 +24,14 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt("hello world", "02715", "040895")
 
     @enigma.stubs(:rand).returns(123)
-    @enigma.stubs(:shift_characters).returns(['!', 's', 't', 'u', 'b', 's', '?'])
+    @enigma.stubs(:shift_message).returns(['!', 's', 't', 'u', 'b', 's', '?'])
 
     expected2 = {
       encryption: "!stubs?",
       key: "00123",
       date: @enigma.date_conversion(Date.today)
     }
-    
+
     assert_equal expected2, @enigma.encrypt("!stubs?")
   end
 

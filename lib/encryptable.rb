@@ -45,26 +45,27 @@ module Encryptable
     @shifts
   end
 
-  def shift_value(start, shift, encrypt)
+  def shift_value(start, shift, encrypt = true)
     return 0 - ((start + shift) % 27) if !encrypt
     (start + shift) % 27
   end
 
-  def shift_characters(message_characters, encrypt = true)
+  def shift_message(message_characters, encrypt = true)
     counter = 0
     output = []
     message_characters.each do |char|
       counter += 1
-      if !@alphabet.alphabet.include?(char)
-        output << char
-      else
-        shift_value = shift_value(find_start_position(char), @shifts[find_shift(counter)], encrypt)
-        char = find_shift_position(shift_value)
-        char = " " if char.nil?
-        output << char
-      end
+      output << shift_character(char, counter, encrypt)
     end
     output
+  end
+
+  def shift_character(char, counter, encrypt = true)
+    return char if !@alphabet.alphabet.include?(char)
+
+    shift_value = shift_value(find_start_position(char), @shifts[find_shift(counter)], encrypt)
+    char = find_shift_position(shift_value)
+    char.nil? ? " " : char
   end
 
   def encryption(message, key = random_key, date = Date.today, encrypt = true)
@@ -74,7 +75,7 @@ module Encryptable
     ShiftOffset.create_offsets(date)
     calculate_shifts
     message_characters = convert_message(message)
-    output = shift_characters(message_characters).join
+    output = shift_message(message_characters).join
     { encryption: output,
       key: key,
       date: date

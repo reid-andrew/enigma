@@ -17,22 +17,4 @@ class Cryptography
     encryption(message, key, date)
   end
 
-  def encryption(message, key = random_key, date = Date.today, encrypt = true)
-    key = pad_key(key)
-    Key.create_keys(key)
-    date = date.class == Date ? date_conversion(date) : date
-    ShiftOffset.create_offsets(date)
-    calculate_shifts
-    message_characters = convert_message(message)
-    output = shift_characters(message_characters).join
-    { encryption: output,
-      key: key,
-      date: date
-    }
-  end
-
-
-
-
-
 end

@@ -90,14 +90,24 @@ class CryptographyTest < Minitest::Test
     assert_equal (-10), @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], false)
   end
 
-  def test_it_shifts_characters
+  def test_it_shifts_message
     offset_test_values = {:A => 1, :B => 1, :C => 1, :D => 1}
     key_test_values = {:A => 0, :B => 1, :C => 2, :D => 3}
     ShiftOffset.stubs(:offset_values).returns(offset_test_values)
     Key.stubs(:key_values).returns(key_test_values)
     @crypto.calculate_shifts
     expected = ['b', 'd', 'f', 'h', '!', 'z', 'a', 'c', 'a', ' ']
-    assert_equal expected, @crypto.shift_characters(['a', 'b', 'c', 'd', '!', 'x', 'y', 'z', ' ', 'y'])
+    assert_equal expected, @crypto.shift_message(['a', 'b', 'c', 'd', '!', 'x', 'y', 'z', ' ', 'y'])
+  end
+
+  def test_it_shifts_characters
+    offset_test_values = {:A => 1, :B => 1, :C => 1, :D => 1}
+    key_test_values = {:A => 0, :B => 1, :C => 2, :D => 3}
+    ShiftOffset.stubs(:offset_values).returns(offset_test_values)
+    Key.stubs(:key_values).returns(key_test_values)
+    @crypto.calculate_shifts
+
+    assert_equal 'b', @crypto.shift_character('a', 1)
   end
 
   def test_it_encrypts_messages
@@ -110,7 +120,7 @@ class CryptographyTest < Minitest::Test
     assert_equal expected, @crypto.encrypt("hello world", "02715", "040895")
 
     @crypto.stubs(:random_key).returns(123)
-    @crypto.stubs(:shift_characters).returns(['s', 't', 'u', 'b', 's'])
+    @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
 
     expected2 = {
       encryption: "stubs",
