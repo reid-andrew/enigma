@@ -21,7 +21,7 @@ class Key
   end
 
   def self.key_values
-    @@key_values ||= @@all_keys.reduce ({}) do |key_values, key|
+    @@all_keys.reduce ({}) do |key_values, key|
       key_values[key.key_letter.to_sym] = key.key_number.to_i
       key_values
     end
