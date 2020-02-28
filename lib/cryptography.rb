@@ -29,40 +29,6 @@ class Cryptography
 
 
 
-  def shift_characters(message_characters)
-    counter = 0
-    output = []
-    message_characters.each do |char|
-      counter += 1
-      if @alphabet.alphabet.include?(char)
-        shift_value = find_start_position(char) + @shifts[find_shift(counter)]
-        shift_value = shift_value % 27
-        char = find_shift_position(shift_value)
-        char = " " if char.nil?
-        output << char
-      else
-        output << char
-      end
-    end
-    output
-  end
 
-  def find_start_position(letter)
-    @alphabet.alpha_by_letter[letter]
-  end
-
-  def find_shift_position(number)
-    @alphabet.alpha_by_number[number]
-  end
-
-  def calculate_shifts
-    keys = Key.key_values
-    offsets = ShiftOffset.offset_values
-    @shifts = keys.reduce ({}) do |shift, (letter, number)|
-      shift[letter] = number + offsets[letter]
-      shift
-    end
-    @shifts
-  end
 
 end
