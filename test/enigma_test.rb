@@ -19,30 +19,41 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_encrypts_messages
-    skip
     expected = {
       encryption: "keder ohulw",
       key: "02715",
       date: "040895"
     }
 
-    assert_equal expected, @engima.encrypt("hello world", "02715", "040895")
+    assert_equal expected, @enigma.encrypt("hello world", "02715", "040895")
+
+    @enigma.stubs(:random_key).returns(123)
+    @enigma.stubs(:shift_characters).returns(['s', 't', 'u', 'b', 's'])
+
+    expected2 = {
+      encryption: "stubs",
+      key: "00123",
+      date: @enigma.date_conversion(Date.today)
+    }
+
+    assert_equal expected2, @enigma.encrypt("stubs")
   end
 
   def test_it_splits_message_characters
     expected = ['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd']
-    assert_equal expected, @enigma.convert_message('hello, world')
+
+    assert_equal expected, @enigma.convert_message('hello, WORLD')
   end
 
   def test_it_shifts_characters
-    skip
     offset_test_values = {:A => 1, :B => 1, :C => 1, :D => 1}
     key_test_values = {:A => 0, :B => 1, :C => 2, :D => 3}
     ShiftOffset.stubs(:offset_values).returns(offset_test_values)
     Key.stubs(:key_values).returns(key_test_values)
-
-    expected = ['b', 'd', 'f', 'h', '!', 'x', 'y', 'z']
-    assert_equal expected, @enigma.shift_characters(['a', 'b', 'c', 'd', '!', 'z', 'b', 'd'])
+    @enigma.calculate_shifts
+    expected = ['b', 'd', 'f', 'h', '!', 'z', 'a', 'c', 'a', ' ']
+    # require "pry"; binding.pry
+    assert_equal expected, @enigma.shift_characters(['a', 'b', 'c', 'd', '!', 'x', 'y', 'z', ' ', 'y'])
   end
 
   def test_it_finds_start_position
