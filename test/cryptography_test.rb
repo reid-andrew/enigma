@@ -77,6 +77,19 @@ class CryptographyTest < Minitest::Test
     assert_equal expected, @crypto.calculate_shifts
   end
 
+  def test_it_determines_shift_direction
+    offset_test_values = {:A => 3, :B => 4, :C => 5, :D => 6}
+    key_test_values = {:A => 0, :B => 0, :C => 0, :D => 0}
+    ShiftOffset.stubs(:offset_values).returns(offset_test_values)
+    Key.stubs(:key_values).returns(key_test_values)
+    shifts = @crypto.calculate_shifts
+
+    assert_equal 4, @crypto.shift_value(@crypto.find_start_position("a"), shifts[@crypto.find_shift(1)], true)
+    assert_equal 10, @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], true)
+    assert_equal (-4), @crypto.shift_value(@crypto.find_start_position("a"), shifts[@crypto.find_shift(1)], false)
+    assert_equal (-10), @crypto.shift_value(@crypto.find_start_position("e"), shifts[@crypto.find_shift(3)], false)
+  end
+
   def test_it_shifts_characters
     offset_test_values = {:A => 1, :B => 1, :C => 1, :D => 1}
     key_test_values = {:A => 0, :B => 1, :C => 2, :D => 3}
