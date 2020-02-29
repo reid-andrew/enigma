@@ -34,7 +34,7 @@ class CryptographyTest < Minitest::Test
       date: @crypto.convert_date(Date.today)
     }
 
-    assert_equal expected2, @crypto.encrypt("stubs")    
+    assert_equal expected2, @crypto.encrypt("stubs")
   end
 
   def test_it_decrypts_messages
@@ -58,6 +58,9 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_creates_random_key
+    assert @crypto.random_key > 0
+    assert @crypto.random_key <= 999999
+
     @crypto.stubs(:rand).returns(1234)
 
     assert_equal 1234, @crypto.random_key
