@@ -2,10 +2,9 @@ class ShiftOffset
 
   @@all_offsets = nil
 
-  def self.create_offsets(date_input)
+  def self.create_offsets(date_input, letters = "ABCD")
     @@all_offsets = []
     counter = 1
-    letters = "ABCD"
     number = truncate_input(square_input(date_input))
     while counter < 5
       @@all_offsets << create_single_offset(letters, number, counter)

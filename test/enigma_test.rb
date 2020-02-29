@@ -29,7 +29,7 @@ class EnigmaTest < Minitest::Test
     expected2 = {
       encryption: "!stubs?",
       key: "00123",
-      date: @enigma.date_conversion(Date.today)
+      date: @enigma.convert_date(Date.today)
     }
 
     assert_equal expected2, @enigma.encrypt("!stubs?")

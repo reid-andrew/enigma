@@ -12,15 +12,15 @@ module Encryptable
     rand(999999)
   end
 
-  def pad_key(random_key)
-    random_key = random_key.to_s
-    while random_key.length < 5
-      random_key.prepend("0")
+  def pad_key(key)
+    key = key.to_s
+    while key.length < 5
+      key.prepend("0")
     end
-    random_key
+    key
   end
 
-  def date_conversion(date)
+  def convert_date(date)
     date.strftime("%m%d%y")
   end
 
@@ -35,9 +35,7 @@ module Encryptable
     :D
   end
 
-  def calculate_shifts
-    keys = Key.key_values
-    offsets = ShiftOffset.offset_values
+  def calculate_shifts(keys = Key.key_values, offsets = ShiftOffset.offset_values)
     @shifts = keys.reduce ({}) do |shift, (letter, number)|
       shift[letter] = number + offsets[letter]
       shift
@@ -52,12 +50,10 @@ module Encryptable
 
   def shift_message(message_characters, encrypt)
     counter = 0
-    output = []
-    message_characters.each do |char|
+    message_characters.map do |char|
       counter += 1
-      output << shift_character(char, counter, encrypt)
+      shift_character(char, counter, encrypt)
     end
-    output
   end
 
   def shift_character(char, counter, encrypt)
@@ -69,14 +65,12 @@ module Encryptable
   def encryption(encrypt, message, key = random_key, date = Date.today)
     key = pad_key(key)
     Key.create_keys(key)
-    date = date.class == Date ? date_conversion(date) : date
+    date = date.class == Date ? convert_date(date) : date
     ShiftOffset.create_offsets(date)
     calculate_shifts
     message_characters = convert_message(message)
     output = shift_message(message_characters, encrypt).join
-    { encryption: output,
-      key: key,
-      date: date
-    }
+    { encryption: output, key: key, date: date}
   end
+
 end

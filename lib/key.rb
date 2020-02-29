@@ -2,10 +2,9 @@ class Key
 
   @@all_keys = nil
 
-  def self.create_keys(random_number)
+  def self.create_keys(random_number, letters = "ABCD")
     @@all_keys = []
     counter = 0
-    letters = "ABCD"
     while counter < 4
       @@all_keys << create_single_key(letters, random_number, counter)
       counter += 1
