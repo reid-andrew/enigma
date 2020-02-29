@@ -161,12 +161,16 @@ class CryptographyTest < Minitest::Test
 
     assert_equal expected, @crypto.encryption(true, "hello world", "02715", "040895")
 
+    expected = ["hello world", "02715", "040895"]
+
+    assert_equal expected, @crypto.encryption(false, "keder ohulw", "02715", "040895")
+
     @crypto.stubs(:random_key).returns(123)
     @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
 
-    expected2 = ["stubs", "00123", @crypto.convert_date(Date.today)]
+    expected = ["stubs", "00123", @crypto.convert_date(Date.today)]
 
-    assert_equal expected2, @crypto.encryption(true, "stubs")
+    assert_equal expected, @crypto.encryption(true, "stubs")
   end
 
 end
