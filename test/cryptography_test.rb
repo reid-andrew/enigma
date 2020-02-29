@@ -88,6 +88,10 @@ class CryptographyTest < Minitest::Test
     Date.stubs(:today).returns(Date.parse('03-05-2020'))
 
     assert_equal "050320", @crypto.convert_date(Date.today)
+
+    Date.stubs(:today).returns(Date.parse('1-1-1901'))
+
+    assert_equal "010101", @crypto.convert_date(Date.today)
   end
 
   def test_it_converts_message_into_array_of_individual_characters
