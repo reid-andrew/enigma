@@ -35,9 +35,7 @@ module Encryptable
     :D
   end
 
-  def calculate_shifts
-    keys = Key.key_values
-    offsets = ShiftOffset.offset_values
+  def calculate_shifts(keys = Key.key_values, offsets = ShiftOffset.offset_values)
     @shifts = keys.reduce ({}) do |shift, (letter, number)|
       shift[letter] = number + offsets[letter]
       shift
