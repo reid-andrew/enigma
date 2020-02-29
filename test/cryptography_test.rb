@@ -98,6 +98,10 @@ class CryptographyTest < Minitest::Test
     expected = ['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd']
 
     assert_equal expected, @crypto.convert_message('hello, WORLD')
+
+    expected = ['c', 'l', 'a', 'm', 'p', 'd', 'o', 'w', 'n']
+
+    assert_equal expected, @crypto.convert_message('Clampdown')
   end
 
   def test_it_finds_abcd_shift
