@@ -71,6 +71,10 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_pads_keys_with_leading_zeroes
+    @crypto.stubs(:random_key).returns(0)
+
+    assert_equal "00000", @crypto.pad_key(@crypto.random_key)
+
     @crypto.stubs(:random_key).returns(1234)
 
     assert_equal "01234", @crypto.pad_key(@crypto.random_key)
