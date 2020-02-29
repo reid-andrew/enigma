@@ -12,12 +12,12 @@ module Encryptable
     rand(999999)
   end
 
-  def pad_key(random_key)
-    random_key = random_key.to_s
-    while random_key.length < 5
-      random_key.prepend("0")
+  def pad_key(key)
+    key = key.to_s
+    while key.length < 5
+      key.prepend("0")
     end
-    random_key
+    key
   end
 
   def date_conversion(date)
