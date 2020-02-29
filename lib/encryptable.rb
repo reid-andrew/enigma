@@ -20,7 +20,7 @@ module Encryptable
     key
   end
 
-  def date_conversion(date)
+  def convert_date(date)
     date.strftime("%m%d%y")
   end
 
@@ -67,7 +67,7 @@ module Encryptable
   def encryption(encrypt, message, key = random_key, date = Date.today)
     key = pad_key(key)
     Key.create_keys(key)
-    date = date.class == Date ? date_conversion(date) : date
+    date = date.class == Date ? convert_date(date) : date
     ShiftOffset.create_offsets(date)
     calculate_shifts
     message_characters = convert_message(message)
