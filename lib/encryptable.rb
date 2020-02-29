@@ -1,11 +1,11 @@
 module Encryptable
 
   def find_start_position(letter)
-    @alphabet.alpha_by_letter[letter]
+    Alphabet.alpha_by_letter[letter]
   end
 
   def find_shift_position(number)
-    @alphabet.alpha_by_number[number]
+    Alphabet.alpha_by_number[number]
   end
 
   def random_key
@@ -61,7 +61,7 @@ module Encryptable
   end
 
   def shift_character(char, counter, encrypt)
-    return char if !@alphabet.alphabet.include?(char)
+    return char if !Alphabet.alphabet.include?(char)
     shift_value = shift_value(find_start_position(char), @shifts[find_shift(counter)], encrypt)
     find_shift_position(shift_value).nil? ? " " : find_shift_position(shift_value)
   end
