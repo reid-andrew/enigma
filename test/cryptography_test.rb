@@ -14,6 +14,39 @@ class CryptographyTest < Minitest::Test
     assert_instance_of Cryptography, @crypto
   end
 
+  def test_it_encrypts_messages
+    expected = {
+      encryption: "keder ohulw",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @crypto.encrypt("hello world", "02715", "040895")
+  end
+
+  def test_it_encrypts_messages_with_random_key_and_date
+    @crypto.stubs(:random_key).returns(123)
+    @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
+
+    expected2 = {
+      encryption: "stubs",
+      key: "00123",
+      date: @crypto.convert_date(Date.today)
+    }
+
+    assert_equal expected2, @crypto.encrypt("stubs")    
+  end
+
+  def test_it_decrypts_messages
+    expected = {
+      encryption: "hello world",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @crypto.decrypt("keder ohulw", "02715", "040895")
+  end
+
   def test_it_finds_start_position
     assert_equal 1, @crypto.find_start_position('a')
     assert_equal 27, @crypto.find_start_position(' ')
@@ -125,37 +158,6 @@ class CryptographyTest < Minitest::Test
     }
 
     assert_equal expected2, @crypto.encryption(true, "stubs")
-  end
-
-  def test_it_encrypts_messages
-    expected = {
-      encryption: "keder ohulw",
-      key: "02715",
-      date: "040895"
-    }
-
-    assert_equal expected, @crypto.encrypt("hello world", "02715", "040895")
-
-    @crypto.stubs(:random_key).returns(123)
-    @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
-
-    expected2 = {
-      encryption: "stubs",
-      key: "00123",
-      date: @crypto.convert_date(Date.today)
-    }
-
-    assert_equal expected2, @crypto.encrypt("stubs")
-  end
-
-  def test_it_decrypts_messages
-    expected = {
-      encryption: "hello world",
-      key: "02715",
-      date: "040895"
-    }
-
-    assert_equal expected, @crypto.decrypt("keder ohulw", "02715", "040895")
   end
 
 end
