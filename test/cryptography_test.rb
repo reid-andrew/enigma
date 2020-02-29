@@ -14,10 +14,6 @@ class CryptographyTest < Minitest::Test
     assert_instance_of Cryptography, @crypto
   end
 
-  def test_it_has_attributes
-    assert_instance_of Alphabet, @crypto.alphabet
-  end
-
   def test_it_finds_start_position
     assert_equal 1, @crypto.find_start_position('a')
     assert_equal 27, @crypto.find_start_position(' ')
