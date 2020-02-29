@@ -50,12 +50,10 @@ module Encryptable
 
   def shift_message(message_characters, encrypt)
     counter = 0
-    output = []
-    message_characters.each do |char|
+    message_characters.map do |char|
       counter += 1
-      output << shift_character(char, counter, encrypt)
+      shift_character(char, counter, encrypt)
     end
-    output
   end
 
   def shift_character(char, counter, encrypt)
