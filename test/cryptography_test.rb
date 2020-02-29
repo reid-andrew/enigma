@@ -153,6 +153,7 @@ class CryptographyTest < Minitest::Test
     @crypto.calculate_shifts
 
     assert_equal 'b', @crypto.shift_character('a', 1, true)
+    assert_equal 'a', @crypto.shift_character('b', 1, false)
   end
 
   def test_it_encryptions_messages
