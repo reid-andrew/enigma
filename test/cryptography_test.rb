@@ -47,7 +47,7 @@ class CryptographyTest < Minitest::Test
   def test_it_converts_dates_to_formatted_string
     Date.stubs(:today).returns(Date.parse('03-05-2020'))
 
-    assert_equal "05032020", @crypto.date_conversion(Date.today)
+    assert_equal "050320", @crypto.date_conversion(Date.today)
   end
 
   def test_it_converts_message_into_array_of_individual_characters

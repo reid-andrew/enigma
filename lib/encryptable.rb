@@ -21,7 +21,7 @@ module Encryptable
   end
 
   def date_conversion(date)
-    date.strftime("%m%d%Y")
+    date.strftime("%m%d%y")
   end
 
   def convert_message(message)
