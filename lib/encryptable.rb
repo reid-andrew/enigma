@@ -70,7 +70,7 @@ module Encryptable
     calculate_shifts
     message_characters = convert_message(message)
     output = shift_message(message_characters, encrypt).join
-    { encryption: output, key: key, date: date}
+    [output, key, date]
   end
 
 end

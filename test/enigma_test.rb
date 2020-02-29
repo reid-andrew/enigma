@@ -26,23 +26,35 @@ class EnigmaTest < Minitest::Test
     @enigma.stubs(:rand).returns(123)
     @enigma.stubs(:shift_message).returns(['!', 's', 't', 'u', 'b', 's', '?'])
 
-    expected2 = {
+    expected = {
       encryption: "!stubs?",
       key: "00123",
       date: @enigma.convert_date(Date.today)
     }
 
-    assert_equal expected2, @enigma.encrypt("!stubs?")
+    assert_equal expected, @enigma.encrypt("!stubs?")
   end
 
   def test_it_decrypts_messages
     expected = {
-      encryption: "hello world",
+      decryption: "hello world",
       key: "02715",
       date: "040895"
     }
 
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715", "040895")
+  end
+
+  def test_it_decrypts_messages_without_date
+    encrypt = @enigma.encrypt("hello world", "02715")
+
+    expected = {
+      decryption: "hello world",
+      key: "02715",
+      date: @enigma.convert_date(Date.today)
+    }
+
+    assert_equal expected, @enigma.decrypt(encrypt[:encryption], "02715")
   end
 
 end

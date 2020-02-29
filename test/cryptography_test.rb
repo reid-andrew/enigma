@@ -14,6 +14,39 @@ class CryptographyTest < Minitest::Test
     assert_instance_of Cryptography, @crypto
   end
 
+  def test_it_encrypts_messages
+    expected = {
+      encryption: "keder ohulw",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @crypto.encrypt("hello world", "02715", "040895")
+  end
+
+  def test_it_encrypts_messages_with_random_key_and_date
+    @crypto.stubs(:random_key).returns(123)
+    @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
+
+    expected2 = {
+      encryption: "stubs",
+      key: "00123",
+      date: @crypto.convert_date(Date.today)
+    }
+
+    assert_equal expected2, @crypto.encrypt("stubs")
+  end
+
+  def test_it_decrypts_messages
+    expected = {
+      decryption: "hello world",
+      key: "02715",
+      date: "040895"
+    }
+
+    assert_equal expected, @crypto.decrypt("keder ohulw", "02715", "040895")
+  end
+
   def test_it_finds_start_position
     assert_equal 1, @crypto.find_start_position('a')
     assert_equal 27, @crypto.find_start_position(' ')
@@ -25,6 +58,9 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_creates_random_key
+    assert @crypto.random_key >= 0
+    assert @crypto.random_key <= 999999
+
     @crypto.stubs(:rand).returns(1234)
 
     assert_equal 1234, @crypto.random_key
@@ -35,6 +71,10 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_pads_keys_with_leading_zeroes
+    @crypto.stubs(:random_key).returns(0)
+
+    assert_equal "00000", @crypto.pad_key(@crypto.random_key)
+
     @crypto.stubs(:random_key).returns(1234)
 
     assert_equal "01234", @crypto.pad_key(@crypto.random_key)
@@ -48,12 +88,20 @@ class CryptographyTest < Minitest::Test
     Date.stubs(:today).returns(Date.parse('03-05-2020'))
 
     assert_equal "050320", @crypto.convert_date(Date.today)
+
+    Date.stubs(:today).returns(Date.parse('1-1-1901'))
+
+    assert_equal "010101", @crypto.convert_date(Date.today)
   end
 
   def test_it_converts_message_into_array_of_individual_characters
     expected = ['h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd']
 
     assert_equal expected, @crypto.convert_message('hello, WORLD')
+
+    expected = ['c', 'l', 'a', 'm', 'p', 'd', 'o', 'w', 'n']
+
+    assert_equal expected, @crypto.convert_message('Clampdown')
   end
 
   def test_it_finds_abcd_shift
@@ -61,6 +109,7 @@ class CryptographyTest < Minitest::Test
     assert_equal :A, @crypto.find_shift(5)
     assert_equal :C, @crypto.find_shift(3)
     assert_equal :C, @crypto.find_shift(11)
+    assert_equal :D, @crypto.find_shift(12)
   end
 
   def test_it_calculates_shifts
@@ -104,58 +153,24 @@ class CryptographyTest < Minitest::Test
     @crypto.calculate_shifts
 
     assert_equal 'b', @crypto.shift_character('a', 1, true)
+    assert_equal 'a', @crypto.shift_character('b', 1, false)
   end
 
   def test_it_encryptions_messages
-    expected = {
-      encryption: "keder ohulw",
-      key: "02715",
-      date: "040895"
-    }
+    expected = ["keder ohulw", "02715", "040895"]
 
     assert_equal expected, @crypto.encryption(true, "hello world", "02715", "040895")
 
-    @crypto.stubs(:random_key).returns(123)
-    @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
+    expected = ["hello world", "02715", "040895"]
 
-    expected2 = {
-      encryption: "stubs",
-      key: "00123",
-      date: @crypto.convert_date(Date.today)
-    }
-
-    assert_equal expected2, @crypto.encryption(true, "stubs")
-  end
-
-  def test_it_encrypts_messages
-    expected = {
-      encryption: "keder ohulw",
-      key: "02715",
-      date: "040895"
-    }
-
-    assert_equal expected, @crypto.encrypt("hello world", "02715", "040895")
+    assert_equal expected, @crypto.encryption(false, "keder ohulw", "02715", "040895")
 
     @crypto.stubs(:random_key).returns(123)
     @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
 
-    expected2 = {
-      encryption: "stubs",
-      key: "00123",
-      date: @crypto.convert_date(Date.today)
-    }
+    expected = ["stubs", "00123", @crypto.convert_date(Date.today)]
 
-    assert_equal expected2, @crypto.encrypt("stubs")
-  end
-
-  def test_it_decrypts_messages
-    expected = {
-      encryption: "hello world",
-      key: "02715",
-      date: "040895"
-    }
-
-    assert_equal expected, @crypto.decrypt("keder ohulw", "02715", "040895")
+    assert_equal expected, @crypto.encryption(true, "stubs")
   end
 
 end
