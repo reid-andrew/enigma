@@ -39,7 +39,7 @@ class CryptographyTest < Minitest::Test
 
   def test_it_decrypts_messages
     expected = {
-      encryption: "hello world",
+      decryption: "hello world",
       key: "02715",
       date: "040895"
     }
@@ -157,22 +157,14 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_encryptions_messages
-    expected = {
-      encryption: "keder ohulw",
-      key: "02715",
-      date: "040895"
-    }
+    expected = ["keder ohulw", "02715", "040895"]
 
     assert_equal expected, @crypto.encryption(true, "hello world", "02715", "040895")
 
     @crypto.stubs(:random_key).returns(123)
     @crypto.stubs(:shift_message).returns(['s', 't', 'u', 'b', 's'])
 
-    expected2 = {
-      encryption: "stubs",
-      key: "00123",
-      date: @crypto.convert_date(Date.today)
-    }
+    expected2 = ["stubs", "00123", @crypto.convert_date(Date.today)]
 
     assert_equal expected2, @crypto.encryption(true, "stubs")
   end
