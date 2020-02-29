@@ -58,7 +58,7 @@ class CryptographyTest < Minitest::Test
   end
 
   def test_it_creates_random_key
-    assert @crypto.random_key > 0
+    assert @crypto.random_key >= 0
     assert @crypto.random_key <= 999999
 
     @crypto.stubs(:rand).returns(1234)
