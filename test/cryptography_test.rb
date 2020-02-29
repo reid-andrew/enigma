@@ -109,6 +109,7 @@ class CryptographyTest < Minitest::Test
     assert_equal :A, @crypto.find_shift(5)
     assert_equal :C, @crypto.find_shift(3)
     assert_equal :C, @crypto.find_shift(11)
+    assert_equal :D, @crypto.find_shift(12)
   end
 
   def test_it_calculates_shifts
