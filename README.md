@@ -21,13 +21,21 @@ This will also provide a confirmation.
 ```Created 'decrypted.txt' with the key 82648 and date 240818```
 
 ### Project Self Assessment
+#### Overall
+I'm overall proud of my work on this project and believe that I've met all expectations and exceeded several. I approached this project with a focus on TDD and on writing small, single-purpose methods. I believe I've succeeded in hitting my goals.
+
 #### Functionality: 3
 I believe I have met the expectations for functionality on this project. Both an Enigma class with #encrypt and #decrypt methods and a Command Line Interface have been successfully implemented. I did not implement a #crack method.
 
-#### Object Oriented Programming: 4
-I believe I have designed the project in a manner which goes beyond the expectations for a 3. The project is broken into 5 classes, 1 module, and 2 runner files for the command line interface.
+#### Object Oriented Programming: 3
+I believe I have designed the project in a manner which likely goes beyond the expectations for a 3. The project is broken into 5 classes, 1 module, and 2 runner files for the command line interface.
 
 The module `Encryptable` is used to house all state-agnostic functionality for encrypting and decrypting messages. The `Enigma` class inherits from a `Cryptography` class which includes that model. This structure allows for scalability and reuse of existing code for encryption in a manner other than Enigma. `Cyrptography` also inherits from an `Alphabet` class which uses class methods to create two hashes used for shifting letters. This structure allows for scalability and potential inclusion of non-Latin alphabets. Finally, the creation of keys and offsets happens in two additional classes. This ensures separation of single responsibilities and again allows for scalable, resusable code.
+
+I think there are a couple decisions I made which, while defendable, may raise enough questions to make this not a 4. These include:
+1. Having `Cryptography` inherit from `Alphabet`. This was not the original structure and was changed in response to challenges I encountered while setting up the CLI. While I believed at the time it was neccessary for the program to function I'm not sure that it's the best approach.
+2. Using instance variables (specifically `@shifts`) inside the methods on the `Encryptable` module. The two methods which reference this variable were originally housed on the `Cryptography` class and moved to the module at a later time. While research I conducted indicates this is an acceptable practice, I'm not sure it was the best approach.
+
 
 #### Ruby Conventions and Mechanics: 3
 I believe that I've followed Ruby convention for spacing, indentation, and line length. All methods have followed the guidelines for length and have been appropriately split into helper methods, where applicable. The project has been designed to minimize nested iteration and to use appropriate enumerables.
